@@ -14,7 +14,7 @@ function Navbar(): JSX.Element {
       </div>
       <div className="col-start-4 col-span-3 w-full flex items-center justify-evenly">
         <Link href="/">Home</Link>
-        <Link href="/forecast">Forecast</Link>
+        <Link href="/forecast/daily">Forecast</Link>
         <Link href="/about">About</Link>
       </div>
       <div className="col-start-7 col-span-1">15 °C</div>

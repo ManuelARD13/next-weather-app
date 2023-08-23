@@ -6,7 +6,7 @@ function daily(): JSX.Element {
     </div>
     <div>
       <div>Current Weather</div>
-      <div>Daily Widget</div>
+      <div>3-hourly Weather</div>
     </div>
     <div>
       Miscelaneous Menu

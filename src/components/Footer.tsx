@@ -5,15 +5,15 @@ import React from 'react';
 function Footer(): JSX.Element {
   const footerPoliciesLinks = [
     {
-      href: '/',
+      href: '/terms',
       text: 'Terminos de uso',
     },
     {
-      href: '/',
+      href: '/terms',
       text: 'Politica de privacidad',
     },
     {
-      href: '/',
+      href: '/terms',
       text: 'Politica de cookies',
     },
   ];
