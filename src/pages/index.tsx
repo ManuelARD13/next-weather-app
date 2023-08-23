@@ -1,16 +1,14 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Footer from '@/components/Footer'
 import Navbar from 'components/Navbar'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <main>
+    <main className='relative w-full flex flex-col items-center '>
       <Navbar />
-      <div className="bg-red-600">
-        Hola Q Hace
-      </div>
+        <div>
+          Hola Q Hace
+        </div>
+      <Footer />
     </main>
   )
 }
