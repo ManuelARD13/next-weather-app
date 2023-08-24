@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Search from '@common/Search';
 
 function Navbar(): JSX.Element {
   return (
@@ -18,14 +19,8 @@ function Navbar(): JSX.Element {
         <Link href="/about">About</Link>
       </div>
       <div className="col-start-7 col-span-1">15 °C</div>
-      <div className="w-full col-start-8 col-span-4">
-        <input 
-          type="search" 
-          placeholder="Search By City" 
-          name="navSearch" 
-          id="navSearch" 
-          className="w-full h-10 border-1 border-gray-300 p-2 rounded-md focus:outline-yellow-400 text-black text-sm" 
-        />
+      <div className="w-full col-start-8 col-span-4 rounded-md text-black">
+        <Search />
       </div>
       <div className="col-start-12 col-span-1">BMenu</div>
     </div>

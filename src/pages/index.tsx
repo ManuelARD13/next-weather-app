@@ -1,6 +1,17 @@
-import Footer from '@/components/Footer';
-import Navbar from 'components/Navbar';
+import { WeatherCTX } from "@context/WeatherContext";
+import { useContext } from "react";
 
 export default function Home() {
-  return <div>HOME</div>;
+
+  const { location, weatherData } = useContext(WeatherCTX);
+  return(
+
+    <>
+    <div>HOME</div>
+    <div>
+      <h1>{location?.city}</h1>
+      <p>{Math.round(weatherData?.main?.temp)}°C</p>
+    </div>
+    </>
+  ) ;
 }
