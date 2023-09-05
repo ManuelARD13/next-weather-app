@@ -5,7 +5,16 @@ import WeatherCard from "@/components/WeatherCard";
 
 export default function Home() {
 
-  const { weather } = useContext(WeatherCTX);
+  const { weatherHistory } = useContext(WeatherCTX);
+  const [weatherCards, setWeatherCards] = useState([] as any[]);
+
+  useEffect(() => {
+    if(weatherHistory.length >= 3){
+      setWeatherCards(weatherHistory.slice( weatherHistory.length - 3, weatherHistory.length).reverse());
+    } else {
+      setWeatherCards(weatherHistory.reverse());
+    }
+  }, [weatherHistory.length]);
 
   return(
 <main className="w-full">
@@ -15,14 +24,13 @@ export default function Home() {
       </div>
       <p className="text-lg text-white my-5">LAST SEARCHS</p>
       <div className="w-6/12 h-44 flex flex-row gap-2">
-        <WeatherCard weatherData={weather}/>
+        {
+          weatherCards.map((weather, index) => {
+            return <WeatherCard key={index} weatherData={weather} />
+          })
+        }
       </div>
     </div>
     </main>
   ) ;
 }
-
-        
-        {/* {
-          location.city !== '' ? <WeatherCard location={location} weatherData={weatherData}/> : null
-        } */}
