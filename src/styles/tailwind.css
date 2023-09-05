@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  overflow-x: hidden;
+}
+
 .home-screen {
   background-image: url('/pexels-tobias-bjørkli-2113566.jpg');
   background-color: rgba(0,0,0,0.15);

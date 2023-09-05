@@ -5,12 +5,15 @@ const API: string | undefined = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY;
 
 const WeatherCTX = createContext({} as {
   getWeather: (cityName: string) => void;
+  get3HourWeather: (weatherData: any) => void;
   weatherHistory: any[];
+  forecast: any[];
 });
 
 function WeatherProvider({ children }: { children: JSX.Element | null }) {
 
   const [ weatherHistory, setWeatherHistory ] = useState([] as any[]);
+  const [ forecast, setForecast ] = useState([]);
   const getWeather = async (cityName: string) => {
     const response = await axios.get(endPoints.getLocation(cityName));
     const location = {
@@ -20,8 +23,6 @@ function WeatherProvider({ children }: { children: JSX.Element | null }) {
 
     const { data } = await axios.get(endPoints.getCurrentWeather(location.lat, location.lon));
   
- 
-
     const weather = {
       main: data.main,
       weather: data.weather,
@@ -36,11 +37,19 @@ function WeatherProvider({ children }: { children: JSX.Element | null }) {
 
   };
 
+  const get3HourWeather = async (weatherData: any) => {
+    const response = await axios.get(endPoints.get3HourForecast(weatherData.lat, weatherData.lon));
+    setForecast(response.data.list);
+    console.log(response.data.list);
+  }
+
   return (
     <WeatherCTX.Provider
       value={{
         getWeather,
+        get3HourWeather,
         weatherHistory,
+        forecast
       }}
     >
       {children}
