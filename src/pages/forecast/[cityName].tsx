@@ -7,7 +7,7 @@ import Link from 'next/link';
 function daily(): JSX.Element {
   const router = useRouter();
 
-  const { weatherHistory, get3HourWeather } = useContext(WeatherCTX);
+  const { weatherHistory } = useContext(WeatherCTX);
 
   const weatherData = weatherHistory.find((weather) => weather.city.replaceAll(' ', '-') === router.query.cityName);
 
@@ -18,7 +18,6 @@ function daily(): JSX.Element {
       <div className='w-full flex flex-col items-center'>
       <Link href={`/forecast/3-hour/${weatherData.city.replaceAll(' ', '-')}`} className='flex justify-center w-full'>
       <div
-        onClick={() => get3HourWeather(weatherData)} 
         className="weather-card flex flex-col backdrop-blur-sm bg-black bg-opacity-30 rounded-md border-2 border-white border-opacity-20 shadow-2xl text-white p-4 w-4/12"
       >
         <h5 className="text-xl">{weatherData.city}</h5>

@@ -5,7 +5,6 @@ const API: string | undefined = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY;
 
 const WeatherCTX = createContext({} as {
   getWeather: (cityName: string) => void;
-  get3HourWeather: (weatherData: any) => void;
   weatherHistory: any[];
   forecast: any[];
 });
@@ -15,39 +14,32 @@ function WeatherProvider({ children }: { children: JSX.Element | null }) {
   const [ weatherHistory, setWeatherHistory ] = useState([] as any[]);
   const [ forecast, setForecast ] = useState([]);
   const getWeather = async (cityName: string) => {
-    const response = await axios.get(endPoints.getLocation(cityName));
-    const location = {
-      lat: response.data[0].lat,
-      lon: response.data[0].lon,
-    };
+    const { data: location } = await axios.get(endPoints.getLocation(cityName));
 
-    const { data } = await axios.get(endPoints.getCurrentWeather(location.lat, location.lon));
+    const { data: weatherData } = await axios.get(endPoints.getCurrentWeather(location[0].lat, location[0].lon));
+
+    const { data: forecast } = await axios.get(endPoints.get3HourForecast(location[0].lat, location[0].lon));
   
     const weather = {
-      main: data.main,
-      weather: data.weather,
-      wind: data.wind,
-      city: response.data[0].name,
-      country: response.data[0].country,
-      lat: response.data[0].lat,
-      lon: response.data[0].lon,
+      main: weatherData.main,
+      weather: weatherData.weather,
+      wind: weatherData.wind,
+      forecast: forecast.list,
+      city: location[0].local_names.es,
+      country: location[0].country,
+      state: location[0].state,
+      lat: location[0].lat,
+      lon: location[0].lon,
     }
 
     setWeatherHistory((weatherHistory) => [...weatherHistory, weather]);
 
   };
 
-  const get3HourWeather = async (weatherData: any) => {
-    const response = await axios.get(endPoints.get3HourForecast(weatherData.lat, weatherData.lon));
-    setForecast(response.data.list);
-    console.log(response.data.list);
-  }
-
   return (
     <WeatherCTX.Provider
       value={{
         getWeather,
-        get3HourWeather,
         weatherHistory,
         forecast
       }}

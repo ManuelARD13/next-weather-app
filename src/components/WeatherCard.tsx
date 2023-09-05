@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 function WeatherCard({ weatherData }: { weatherData: any }) {
+
   return (
     
     <div 
@@ -10,7 +11,7 @@ function WeatherCard({ weatherData }: { weatherData: any }) {
     >
       <Link href={`/forecast/${weatherData.city.replaceAll(" ", "-")}`}>
       <h5 className="text-xl">{weatherData.city}</h5>
-      <p className="text-xs">{weatherData.country}</p>
+      <p className="text-xs">{`${weatherData.state ? weatherData.state: ""}, ${weatherData.country}`}</p>
       <div className="flex my-2.5">
         <Image src={'/soleado.png'} alt="" width={50} height={50} />
         <p className="text-2xl">{Math.round(weatherData.main.temp)}°C</p>
