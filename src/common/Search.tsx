@@ -5,14 +5,14 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 function Search() {
   const [searchedCity, setSearch] = useState('');
 
-  const { location, useGetLocation, useGetWeather, useGetHourlyWeather } = useContext(WeatherCTX);
+  const { getWeather } = useContext(WeatherCTX);
+
+  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    useGetLocation(searchedCity);
-    useGetWeather(location.lat, location.lon);
-    useGetHourlyWeather(location.lat, location.lon);
-  };
+    getWeather(searchedCity);
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-row w-full">

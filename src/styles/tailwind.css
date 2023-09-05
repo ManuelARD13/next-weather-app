@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.home-screen {
+  background-image: url('/pexels-tobias-bjørkli-2113566.jpg');
+  background-color: rgba(0,0,0,0.15);
+  background-size: cover;
+  background-blend-mode: overlay;
+}
+
+.weather-card:hover {
+  transform: scale(1.1);
+  transition: 0.30s;
+}

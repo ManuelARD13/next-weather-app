@@ -1,17 +1,28 @@
+import Search from "@common/Search";
 import { WeatherCTX } from "@context/WeatherContext";
-import { useContext } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import WeatherCard from "@/components/WeatherCard";
 
 export default function Home() {
 
-  const { location, weatherData } = useContext(WeatherCTX);
-  return(
+  const { weather } = useContext(WeatherCTX);
 
-    <>
-    <div>HOME</div>
-    <div>
-      <h1>{location?.city}</h1>
-      <p>{Math.round(weatherData?.main?.temp)}°C</p>
+  return(
+<main className="w-full">
+    <div className="home-screen h-96 bg-violet-300 flex flex-col items-center justify-center">
+      <div className="w-6/12 flex items-center justify-center">
+        <Search />
+      </div>
+      <p className="text-lg text-white my-5">LAST SEARCHS</p>
+      <div className="w-6/12 h-44 flex flex-row gap-2">
+        <WeatherCard weatherData={weather}/>
+      </div>
     </div>
-    </>
+    </main>
   ) ;
 }
+
+        
+        {/* {
+          location.city !== '' ? <WeatherCard location={location} weatherData={weatherData}/> : null
+        } */}

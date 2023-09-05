@@ -1,71 +1,81 @@
 import endPoints from '@services/api';
 import axios from 'axios';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useReducer } from 'react';
 const API: string | undefined = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY;
 
-const WeatherCTX = createContext(
-  {} as {
-    location: any;
-    weatherData: {
-      main: {};
-      weather: any;
-      wind: {};
-    };
-    useGetLocation: (cityName: string) => void;
-    useGetWeather: (lat: number, lon: number) => void;
-    useGetHourlyWeather: (lat: number, lon: number) => void;
-  }
-);
+const WeatherCTX = createContext({} as {
+  weather: any;
+  getWeather: (cityName: string) => void;
+});
 
 function WeatherProvider({ children }: { children: JSX.Element | null }) {
-  const [location, setLocation] = useState({
+  const weatherReducer = (weather: any, action: any): any => {
+    switch (action.type) {
+      case 'SET_WEATHER': {
+        return {
+          ...weather,
+          main: action.payload.main,
+          weather: action.payload.weather,
+          wind: action.payload.wind,
+        };
+      }
+
+      case 'SET_CITY': {
+        return {
+          ...weather,
+          city: action.payload.city,
+          country: action.payload.country,
+          lat: action.payload.lat,
+          lon: action.payload.lon,
+        };
+      }
+    }
+    throw Error('Unknown action: ' + action.type);
+  };
+
+  const initialState = {
     country: '',
     city: '',
     lat: 0,
     lon: 0,
-  });
-
-  const [weatherData, setWeatherData] = useState({
     main: {},
-    weather: [],
+    weather: {},
     wind: {},
-  });
-
-  const [HourlyData, setHourlyData] = useState({});
-  const [testData, setTestData] = useState();
-
-  const useGetLocation = async (cityName: string) => {
-    const { data } = await axios.get(endPoints.getLocation(cityName));
-    console.log(data);
-    setLocation(
-      {
-        ...location, 
-        country: data[0].country, 
-        city: data[0].name, 
-        lat: data[0].lat, 
-        lon: data[0].lon
-      });
-  }
-  const useGetWeather = async (lat: number, lon: number) => {
-    const { data } = await axios.get(endPoints.getCurrentWeather(lat, lon));
-    console.log(data);
-    setWeatherData({ ...weatherData, main: data.main, weather: data.weather, wind: data.wind });
   };
 
-  const useGetHourlyWeather = async (lat: number, lon: number) => {
-    const { data } = await axios.get(endPoints.get3HourForecast(lat, lon));
-    console.log(data);
-    setHourlyData(data);
+  const [weather, dispatch] = useReducer(weatherReducer, initialState);
+  const getWeather = async (cityName: string) => {
+    const response = await axios.get(endPoints.getLocation(cityName));
+    const location = {
+      lat: response.data[0].lat,
+      lon: response.data[0].lon,
+    };
+    dispatch({
+      type: 'SET_CITY',
+      payload: {
+        city: response.data[0].name,
+        country: response.data[0].country,
+        lat: response.data[0].lat,
+        lon: response.data[0].lon,
+      },
+    });
+    const { data } = await axios.get(endPoints.getCurrentWeather(location.lat, location.lon));
+  
+    dispatch({
+      type: 'SET_WEATHER',
+      payload: {
+        main: data.main,
+        weather: data.weather,
+        wind: data.wind,
+      },
+    })
   };
 
   return (
     <WeatherCTX.Provider
       value={{
-        location,
-        weatherData,
-        useGetLocation,
-        useGetWeather,
-        useGetHourlyWeather,
+        weather,
+        getWeather,
       }}
     >
       {children}
