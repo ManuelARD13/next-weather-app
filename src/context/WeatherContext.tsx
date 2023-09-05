@@ -36,10 +36,6 @@ function WeatherProvider({ children }: { children: JSX.Element | null }) {
 
   };
 
-  const saveWeatherHistory = () => {
-    
-  }
-
   return (
     <WeatherCTX.Provider
       value={{
